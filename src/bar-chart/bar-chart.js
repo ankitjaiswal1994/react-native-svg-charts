@@ -121,7 +121,21 @@ class BarChart extends PureComponent {
     }
 
     render() {
-        const { data, animate, animationDuration, style, numberOfTicks, svg, horizontal, children, radiusX, radiusY, heightPlaceholderView, showPlaceholderView, showCustomRect } = this.props
+        const {
+            data,
+            animate,
+            animationDuration,
+            style,
+            numberOfTicks,
+            svg,
+            horizontal,
+            children,
+            radiusX,
+            radiusY,
+            showPlaceholderView,
+            showCustomRect,
+            targetData,
+        } = this.props
 
         const { height, width } = this.state
 
@@ -175,8 +189,9 @@ class BarChart extends PureComponent {
                                     <Path
                                         radiusX={radiusX}
                                         radiusY={radiusY}
+                                        targetValue={showPlaceholderView ? targetData[index] : 0}
                                         showPlaceholderView={showPlaceholderView}
-                                        heightPlaceholderView={heightPlaceholderView}
+                                        heightPlaceholderView={this.props.yMax}
                                         showCustomRect={showCustomRect}
                                         key={index}
                                         {...svg}
@@ -202,6 +217,7 @@ class BarChart extends PureComponent {
 
 BarChart.propTypes = {
     data: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.object])).isRequired,
+    targetData: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.object])),
     style: PropTypes.any,
     spacingInner: PropTypes.number,
     spacingOuter: PropTypes.number,
@@ -223,7 +239,6 @@ BarChart.propTypes = {
     radiusX: PropTypes.number,
     radiusY: PropTypes.number,
     showPlaceholderView: PropTypes.bool,
-    heightPlaceholderView: PropTypes.number,
     showCustomRect: PropTypes.bool,
 }
 

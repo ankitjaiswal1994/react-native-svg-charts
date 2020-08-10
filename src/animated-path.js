@@ -80,39 +80,50 @@ class AnimatedPath extends Component {
     }
 
     render() {
-        const { radiusX, radiusY, showPlaceholderView, heightPlaceholderView, showCustomRect } = this.props
+        const { radiusX, radiusY, showPlaceholderView, heightPlaceholderView, showCustomRect, targetValue } = this.props
         if (showCustomRect) {
-  
-        var commands = this.state.d.split(/(?=[LMC])/);
+            var commands = this.state.d.split(/(?=[LMC])/)
 
-        var pointArrays = commands.map(function (d) {
-            var pointsArray = d.slice(1, d.length).split(',');
-            var pairsArray = [];
-            for (var i = 0; i < pointsArray.length; i += 2) {
-                pairsArray.push([+pointsArray[i], +pointsArray[i + 1]]);
-            }
-            return pairsArray;
-        });
+            var pointArrays = commands.map(function(d) {
+                var pointsArray = d.slice(1, d.length).split(',')
+                var pairsArray = []
+                for (var i = 0; i < pointsArray.length; i += 2) {
+                    pairsArray.push([+pointsArray[i], +pointsArray[i + 1]])
+                }
+                return pairsArray
+            })
 
-        const width = Math.abs(pointArrays[1][0][0] - pointArrays[0][0][0]);
-        const height = Math.abs(pointArrays[2][0][1] - pointArrays[1][0][1]);
-        const x = Math.abs(pointArrays[0][0][0]);
-        const y = Math.abs(pointArrays[0][0][1]);
+            const width = Math.abs(pointArrays[1][0][0] - pointArrays[0][0][0])
+            const height = Math.abs(pointArrays[2][0][1] - pointArrays[1][0][1])
+            const x = Math.abs(pointArrays[0][0][0])
+            const y = Math.abs(pointArrays[0][0][1])
 
-        return (
-            <>
-            {showPlaceholderView && <Rect
-                x={x} rx={radiusX} ry={radiusY} y={0} width={width} height={heightPlaceholderView}
-                fill='#f4f4f4'
-            />}
-            <Rect
-                x={x} rx={radiusX} ry={radiusY} y={y} width={width} height={height}
-                ref={(ref) => (this.component = ref)}
-                {...this.props}
-            />
-            </>
-        )
-    } else {
+            return (
+                <>
+                    {showPlaceholderView && (
+                        <Rect
+                            x={x}
+                            rx={radiusX}
+                            ry={radiusY}
+                            y={heightPlaceholderView - targetValue}
+                            width={width}
+                            height={targetValue}
+                            fill='#f4f4f4'
+                        />
+                    )}
+                    <Rect
+                        x={x}
+                        rx={radiusX}
+                        ry={radiusY}
+                        y={y}
+                        width={width}
+                        height={height}
+                        ref={(ref) => (this.component = ref)}
+                        {...this.props}
+                    />
+                </>
+            )
+        } else {
             return (
                 <Path
                     ref={(ref) => (this.component = ref)}
@@ -120,8 +131,8 @@ class AnimatedPath extends Component {
                     d={this.props.animate ? this.state.d : this.props.d}
                 />
             )
+        }
     }
-}
 }
 
 AnimatedPath.propTypes = {
@@ -130,6 +141,7 @@ AnimatedPath.propTypes = {
     renderPlaceholder: PropTypes.func,
     radiusX: PropTypes.number,
     radiusY: PropTypes.number,
+    targetValue: PropTypes.number,
     showPlaceholderView: PropTypes.bool,
     heightPlaceholderView: PropTypes.number,
     showCustomRect: PropTypes.bool,
@@ -143,6 +155,7 @@ AnimatedPath.defaultProps = {
     radiusY: 10,
     showPlaceholderView: true,
     showCustomRect: true,
+    targetValue: 100,
     heightPlaceholderView: 220,
     renderPlaceholder: () => null,
 }
