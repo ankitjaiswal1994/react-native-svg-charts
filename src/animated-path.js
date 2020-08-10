@@ -97,6 +97,7 @@ class AnimatedPath extends Component {
             const height = Math.abs(pointArrays[2][0][1] - pointArrays[1][0][1])
             const x = Math.abs(pointArrays[0][0][0])
             const y = Math.abs(pointArrays[0][0][1])
+            const yPlaceholderView = heightPlaceholderView - targetValue
 
             return (
                 <>
@@ -105,9 +106,9 @@ class AnimatedPath extends Component {
                             x={x}
                             rx={radiusX}
                             ry={radiusY}
-                            y={heightPlaceholderView - targetValue}
+                            y={yPlaceholderView < 0 ? 0 : yPlaceholderView}
                             width={width}
-                            height={targetValue}
+                            height={1000}
                             fill='#f4f4f4'
                         />
                     )}
