@@ -192,6 +192,7 @@ class BarChart extends PureComponent {
                                         targetValue={showPlaceholderView ? targetData[index] : 0}
                                         showPlaceholderView={showPlaceholderView}
                                         heightPlaceholderView={this.props.yMax}
+                                        chartHeight={style.height}
                                         showCustomRect={showCustomRect}
                                         key={index}
                                         {...svg}

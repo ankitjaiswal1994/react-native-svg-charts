@@ -80,7 +80,15 @@ class AnimatedPath extends Component {
     }
 
     render() {
-        const { radiusX, radiusY, showPlaceholderView, heightPlaceholderView, showCustomRect, targetValue } = this.props
+        const {
+            radiusX,
+            radiusY,
+            showPlaceholderView,
+            heightPlaceholderView,
+            showCustomRect,
+            targetValue,
+            chartHeight,
+        } = this.props
         if (showCustomRect) {
             var commands = this.state.d.split(/(?=[LMC])/)
 
@@ -97,7 +105,15 @@ class AnimatedPath extends Component {
             const height = Math.abs(pointArrays[2][0][1] - pointArrays[1][0][1])
             const x = Math.abs(pointArrays[0][0][0])
             const y = Math.abs(pointArrays[0][0][1])
-            const yPlaceholderView = heightPlaceholderView - targetValue
+            const multiplier =
+                heightPlaceholderView > 0
+                    ? chartHeight > heightPlaceholderView
+                        ? chartHeight / heightPlaceholderView
+                        : heightPlaceholderView / chartHeight
+                    : 1
+
+            const item = heightPlaceholderView - targetValue
+            const yPlaceholderView = item / multiplier
 
             return (
                 <>
@@ -108,7 +124,7 @@ class AnimatedPath extends Component {
                             ry={radiusY}
                             y={yPlaceholderView < 0 ? 0 : yPlaceholderView}
                             width={width}
-                            height={1000}
+                            height={1000000}
                             fill='#f4f4f4'
                         />
                     )}
@@ -143,6 +159,7 @@ AnimatedPath.propTypes = {
     radiusX: PropTypes.number,
     radiusY: PropTypes.number,
     targetValue: PropTypes.number,
+    chartHeight: PropTypes.number,
     showPlaceholderView: PropTypes.bool,
     heightPlaceholderView: PropTypes.number,
     showCustomRect: PropTypes.bool,
@@ -157,6 +174,7 @@ AnimatedPath.defaultProps = {
     showPlaceholderView: true,
     showCustomRect: true,
     targetValue: 100,
+    chartHeight: 220,
     heightPlaceholderView: 220,
     renderPlaceholder: () => null,
 }
