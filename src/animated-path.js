@@ -112,8 +112,9 @@ class AnimatedPath extends Component {
                         : heightPlaceholderView / chartHeight
                     : 1
 
-            const item = heightPlaceholderView - targetValue
+            const item = heightPlaceholderView - (targetValue === undefined ? 0 : targetValue.value)
             const yPlaceholderView = item / multiplier
+            const yValue = yPlaceholderView < 0 ? 0 : yPlaceholderView
 
             return (
                 <>
@@ -122,10 +123,10 @@ class AnimatedPath extends Component {
                             x={x}
                             rx={radiusX}
                             ry={radiusY}
-                            y={yPlaceholderView < 0 ? 0 : yPlaceholderView}
+                            y={yValue}
                             width={width}
-                            height={1000000}
-                            fill='#f4f4f4'
+                            height={chartHeight - yValue}
+                            fill={targetValue.isVisible ? targetValue.color : targetValue.color}
                         />
                     )}
                     <Rect
@@ -158,7 +159,7 @@ AnimatedPath.propTypes = {
     renderPlaceholder: PropTypes.func,
     radiusX: PropTypes.number,
     radiusY: PropTypes.number,
-    targetValue: PropTypes.number,
+    targetValue: PropTypes.object,
     chartHeight: PropTypes.number,
     showPlaceholderView: PropTypes.bool,
     heightPlaceholderView: PropTypes.number,
@@ -173,7 +174,6 @@ AnimatedPath.defaultProps = {
     radiusY: 10,
     showPlaceholderView: true,
     showCustomRect: true,
-    targetValue: 100,
     chartHeight: 220,
     heightPlaceholderView: 220,
     renderPlaceholder: () => null,

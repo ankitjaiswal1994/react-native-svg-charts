@@ -189,7 +189,9 @@ class BarChart extends PureComponent {
                                     <Path
                                         radiusX={radiusX}
                                         radiusY={radiusY}
-                                        targetValue={showPlaceholderView ? targetData[index] : 0}
+                                        targetValue={
+                                            showPlaceholderView && targetData !== undefined ? targetData[index] : {}
+                                        }
                                         showPlaceholderView={showPlaceholderView}
                                         heightPlaceholderView={this.props.yMax}
                                         chartHeight={style.height}
@@ -248,6 +250,7 @@ BarChart.defaultProps = {
     spacingOuter: 0.05,
     contentInset: {},
     numberOfTicks: 10,
+    showPlaceholderView: false,
     svg: {},
     yAccessor: ({ item }) => item,
 }
