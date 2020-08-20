@@ -113,7 +113,12 @@ class AnimatedPath extends Component {
                     : 1
 
             const item = heightPlaceholderView - (targetValue === undefined ? 0 : targetValue.value)
-            const yPlaceholderView = item / multiplier
+            console.log('11', multiplier)
+            const yPlaceholderView = isNaN(item)
+                ? 1
+                : chartHeight > heightPlaceholderView
+                ? item * multiplier
+                : item / multiplier
             const yValue = yPlaceholderView < 0 ? 0 : yPlaceholderView
 
             return (
